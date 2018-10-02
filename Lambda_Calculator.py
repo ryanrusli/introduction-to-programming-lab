@@ -36,7 +36,7 @@ def main():
         elif op == "/":
             result = divide(a,b)    #divides a by b
             print(result)
-        elif op == "q":
+        elif op == "q":             #checks if the operator is equal to q
             run = False
             print("The final answer is ",result)
             break               # ends the while loop
