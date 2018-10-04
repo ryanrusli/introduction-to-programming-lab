@@ -13,7 +13,7 @@ class BankServices:     #class for all the function in a ATM
         self.ID = str(ID)
         self.balance = int(balance)
 
-    def checkBalance(self):
+    def checkBalance(self):             #checks and outputs the balance of the user
         print("Your balance is",self.balance)
         return self.balance
     
@@ -31,7 +31,7 @@ class BankServices:     #class for all the function in a ATM
             if self.ID == lines[i]:
                 if pin != lines[i+1]:
                     print("Invalid PIN!")
-                    sys.exit()
+                    sys.exit()                  #ends the program instantly
                 found = True
                 if self.balance > amount:
                     new = self.balance - amount
@@ -41,7 +41,7 @@ class BankServices:     #class for all the function in a ATM
                 elif amount > self.balance:
                     print("Insufficient balance!")
         data.seek(0)
-        data.truncate()
+        data.truncate()              #removes all the contents of data, which is the txt file
         prevline =''
         for line in lines:
             if line == old and pin == prevline:
@@ -64,7 +64,7 @@ class BankServices:     #class for all the function in a ATM
             if self.ID == lines[i]:
                 if pin != lines[i+1]:
                     print("Invalid PIN!")
-                    sys.exit()
+                    sys.exit()              #ends the code instantly
                 found = True
                 new = self.balance + amount
                 old = self.balance
@@ -72,7 +72,7 @@ class BankServices:     #class for all the function in a ATM
                 old = str(old)
                 new = str(new)
         data.seek(0)
-        data.truncate()
+        data.truncate()              #removes all the contents of data, which is the txt file
         prevline =''
         for line in lines:
             if line == old and pin == prevline:
@@ -95,7 +95,7 @@ class BankServices:     #class for all the function in a ATM
             if self.ID == lines[i]:
                 if pin != lines[i+1]:
                     print("Invalid PIN!")
-                    sys.exit()
+                    sys.exit()              #ends the program instantly
                 found = True
                 if self.balance > amount:
                     new = self.balance - amount
@@ -106,8 +106,8 @@ class BankServices:     #class for all the function in a ATM
                 elif amount > self.balance:
                     print("Insufficient balance!")
         data.seek(0)
-        data.truncate()
-        prevline =''
+        data.truncate()              #removes all the contents of data, which is the txt file
+        prevline =''               
         for line in lines:
             if line == old and pin == prevline:
                 data.write(new+"\n")
@@ -130,7 +130,7 @@ class BankServices:     #class for all the function in a ATM
             if transferID == lines[i]:
                 if pin != lines[i+1]:
                     print("Invalid PIN!")
-                    sys.exit()
+                    sys.exit()              #ends the program instantly
                 if amount >= 0 and self.balance>=amount:
                     transfer_oldbalance = int(lines[i+2])
                     transfer_newbalance = transfer_oldbalance + amount
@@ -150,7 +150,7 @@ class BankServices:     #class for all the function in a ATM
             print("Account ID not found")
         elif found ==True:
             data.seek(0)
-            data.truncate()
+            data.truncate()          #removes all the contents of data, which is the txt file
             prevline =''
             for line in lines:
                 if line == my_oldbalance and prevline == pin:
@@ -215,7 +215,7 @@ class Account:                  #Account Class
             print("Account ID not found.")
             return False
                     
-    def getBalance(self,login):     #collects the balance
+    def getBalance(self,login):     #collects the balance for the Bank Services
         data = open("Accounts.txt", "rt")
         data = data.read()
         data = data.split()
@@ -234,8 +234,8 @@ def main():     #main function
         for i in newAccount:           
             f.write("%s\n"%i)
 
-        f.flush()
-        os.fsync(f.fileno())
+        f.flush()               #removes/clears the buffer in python compiler
+        os.fsync(f.fileno())    #removes/clears the buffer in the operating system, updates the data in the txt file
         
     
     login = str(input("Input your login id: "))
@@ -271,9 +271,9 @@ def main():     #main function
             print("Thank you for using our service.")
             
 
-    f.flush()
-    os.fsync(f.fileno())
-    f.close()
+    f.flush()                   #removes/clears the buffer in the python compiler
+    os.fsync(f.fileno())        #removes/clears the buffer in the operating system, and updates the data in text file
+    f.close()                   #closes the txt file
     
     
         
