@@ -228,29 +228,37 @@ def main():     #main function
     login = str(input("Input your login id: "))
     
     checked = start.checkcard(login)                    #checks login credentials, returns boolean value
-
-    if checked:
-        balance = start.getBalance(login)
-        service = BankServices(login,balance)
-        option = int(input("1.Withdraw\n2.Deposit\n3.Debit\n4.Transfer\n5.Check Balance\n"))     #services in the bank
-        if option == 1:
-            amount = int(input("Input withdraw amount: "))
-            service.withdrawMoney(amount)
-        elif option == 2:
-            amount = int(input("Input deposit amount: "))
-            service.depositMoney(amount)
-        elif option == 3:
-            amount = int(input("Input transfer amount: "))
-            service.debit(amount)
-        elif option == 4:
-            transferID = input("Input the ID you are transferring to: ")
-            service.TransferMoney(login,transferID)
-        elif option == 5:
-            service.checkBalance()
-
-    
+    run = True
+    while run == True:
+        if checked:
+            balance = start.getBalance(login)
+            service = BankServices(login,balance)
+            option = int(input("1.Withdraw\n2.Deposit\n3.Debit\n4.Transfer\n5.Check Balance\n"))     #services in the bank
+            if option == 1:
+                amount = int(input("Input withdraw amount: "))
+                service.withdrawMoney(amount)
+            elif option == 2:
+                amount = int(input("Input deposit amount: "))
+                service.depositMoney(amount)
+            elif option == 3:
+                amount = int(input("Input transfer amount: "))
+                service.debit(amount)
+            elif option == 4:
+                transferID = input("Input the ID you are transferring to: ")
+                service.TransferMoney(login,transferID)
+            elif option == 5:
+                service.checkBalance()
+        cont = input("Would you like to make another transaction? [y/n] ")
+        if cont == "n":
+            run = False
+            print("Thank you for using our service.")
             
 
     f.flush()
     os.fsync(f.fileno())
     f.close()
+    
+    
+        
+main()
+    
