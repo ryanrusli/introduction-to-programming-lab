@@ -109,6 +109,8 @@ class BankServices:     #class for all the function in a ATM
         data = open("Accounts.txt", "r+")       #opens the text file to be read and written
         lines = data.readlines()
         found = False
+        amount = int(input("Input the amount you would like to transfer: "))
+        pin = input("Input pin to confirm: ")
         for i in range(len(lines)-4):
             lines[i] = lines[i].rstrip("\n")
             lines[i+1] = lines[i+1].rstrip("\n")
@@ -116,16 +118,14 @@ class BankServices:     #class for all the function in a ATM
             lines[i+3] = lines[i+3].rstrip("\n")
             lines[i+4] = lines[i+4].rstrip("\n")
             if transferID == lines[i]:
-                amount = int(input("Input the amount you would like to transfer: "))
-                pin = input("Input pin to confirm: ")
-                if amount >= 0 and self.balance>amount:
-                    found = True
-                    transfer_oldbalance = self.balance
+                if amount >= 0 and self.balance>=amount:
+                    transfer_oldbalance = int(lines[i+2])
                     transfer_newbalance = transfer_oldbalance + amount
                     transferee = lines[i+3]
                     transfer_newbalance = str(transfer_newbalance)
                     transfer_oldbalance = str(transfer_oldbalance)
                     print("Amount successfully transferred to",transferee,".")
+                    found = True
                 else:
                     print("Insufficient amount or invalid amount!")
             elif login == lines[i]:
@@ -143,7 +143,7 @@ class BankServices:     #class for all the function in a ATM
                 if line == my_oldbalance and prevline == pin:
                     data.write(my_newbalance + "\n")
                 elif line == transfer_oldbalance:
-                    data.write(line.replace(transfer_oldbalance,transfer_newbalance)+ "\n")
+                    data.write(transfer_newbalance+"\n")
                 else:
                     data.write(line + "\n")
                 prevline = line
@@ -226,8 +226,12 @@ def main():     #main function
         
     
     login = str(input("Input your login id: "))
+    checked = start.checkcard(login)            #checks login credentials, returns boolean value
+    if len(login) != 8:
+        print("Invalid ID")
+        checked = False
     
-    checked = start.checkcard(login)                    #checks login credentials, returns boolean value
+                    
     run = True
     while run == True:
         if checked:
