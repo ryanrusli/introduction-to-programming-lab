@@ -6,6 +6,7 @@
 
 import random
 import os
+import sys
 
 class BankServices:     #class for all the function in a ATM
     def __init__(self,ID,balance):
@@ -28,6 +29,9 @@ class BankServices:     #class for all the function in a ATM
             lines[i+3] = lines[i+3].rstrip("\n")
             lines[i+4] = lines[i+4].rstrip("\n")
             if self.ID == lines[i]:
+                if pin != lines[i+1]:
+                    print("Invalid PIN!")
+                    sys.exit()
                 found = True
                 if self.balance > amount:
                     new = self.balance - amount
@@ -58,6 +62,9 @@ class BankServices:     #class for all the function in a ATM
             lines[i+3] = lines[i+3].rstrip("\n")
             lines[i+4] = lines[i+4].rstrip("\n")
             if self.ID == lines[i]:
+                if pin != lines[i+1]:
+                    print("Invalid PIN!")
+                    sys.exit()
                 found = True
                 new = self.balance + amount
                 old = self.balance
@@ -86,6 +93,9 @@ class BankServices:     #class for all the function in a ATM
             lines[i+3] = lines[i+3].rstrip("\n")
             lines[i+4] = lines[i+4].rstrip("\n")
             if self.ID == lines[i]:
+                if pin != lines[i+1]:
+                    print("Invalid PIN!")
+                    sys.exit()
                 found = True
                 if self.balance > amount:
                     new = self.balance - amount
@@ -118,6 +128,9 @@ class BankServices:     #class for all the function in a ATM
             lines[i+3] = lines[i+3].rstrip("\n")
             lines[i+4] = lines[i+4].rstrip("\n")
             if transferID == lines[i]:
+                if pin != lines[i+1]:
+                    print("Invalid PIN!")
+                    sys.exit()
                 if amount >= 0 and self.balance>=amount:
                     transfer_oldbalance = int(lines[i+2])
                     transfer_newbalance = transfer_oldbalance + amount
