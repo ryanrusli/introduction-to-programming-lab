@@ -11,6 +11,11 @@ class BankServices:     #class for all the function in a ATM
     def __init__(self,ID,balance):
         self.ID = str(ID)
         self.balance = int(balance)
+
+    def checkBalance(self):
+        print("Your balance is",self.balance)
+        return self.balance
+    
     def withdrawMoney(self,amount):     #removes money from the balance
         data = open("Accounts.txt", "r+")       #opens the text file to be read and written
         lines = data.readlines()
@@ -26,13 +31,13 @@ class BankServices:     #class for all the function in a ATM
                 found = True
                 if self.balance > amount:
                     new = self.balance - amount
-                    old = lines[i+2]
+                    old = str(self.balance)
                     print("Your balance has been decreased to",new)
                     new = str(new)
                 elif amount > self.balance:
                     print("Insufficient balance!")
         data.seek(0)
-        data.truncate()     #removes all the data in the txt file
+        data.truncate()
         prevline =''
         for line in lines:
             if line == old and pin == prevline:
@@ -54,12 +59,13 @@ class BankServices:     #class for all the function in a ATM
             lines[i+4] = lines[i+4].rstrip("\n")
             if self.ID == lines[i]:
                 found = True
-                new = int(lines[i+2]) + amount
-                old = lines[i+2]
+                new = self.balance + amount
+                old = self.balance
                 print("Your new balance is",new)
+                old = str(old)
                 new = str(new)
         data.seek(0)
-        data.truncate()             #removes all the data in the txt file
+        data.truncate()
         prevline =''
         for line in lines:
             if line == old and pin == prevline:
@@ -83,13 +89,14 @@ class BankServices:     #class for all the function in a ATM
                 found = True
                 if self.balance > amount:
                     new = self.balance - amount
-                    old = lines[i+2]
+                    old = self.balance
                     print("Your balance has been decreased to",new)
+                    old = str(old)
                     new = str(new)
                 elif amount > self.balance:
                     print("Insufficient balance!")
         data.seek(0)
-        data.truncate()             #removes all the data in the txt file
+        data.truncate()
         prevline =''
         for line in lines:
             if line == old and pin == prevline:
@@ -110,10 +117,10 @@ class BankServices:     #class for all the function in a ATM
             lines[i+4] = lines[i+4].rstrip("\n")
             if transferID == lines[i]:
                 amount = int(input("Input the amount you would like to transfer: "))
-                pin = input("Input pin to confirm")
-                if amount > =0 and line[i+2]>amount:
+                pin = input("Input pin to confirm: ")
+                if amount >= 0 and self.balance>amount:
                     found = True
-                    transfer_oldbalance = int(lines[i+2])
+                    transfer_oldbalance = self.balance
                     transfer_newbalance = transfer_oldbalance + amount
                     transferee = lines[i+3]
                     transfer_newbalance = str(transfer_newbalance)
@@ -122,7 +129,7 @@ class BankServices:     #class for all the function in a ATM
                 else:
                     print("Insufficient amount or invalid amount!")
             elif login == lines[i]:
-                my_oldbalance = int(lines[i+2])
+                my_oldbalance = self.balance
                 my_newbalance = my_oldbalance - amount
                 my_oldbalance = str(my_oldbalance)
                 my_newbalance = str(my_newbalance)
@@ -130,7 +137,7 @@ class BankServices:     #class for all the function in a ATM
             print("Account ID not found")
         elif found ==True:
             data.seek(0)
-            data.truncate()         #removes all the data in the txt file
+            data.truncate()
             prevline =''
             for line in lines:
                 if line == my_oldbalance and prevline == pin:
@@ -142,8 +149,10 @@ class BankServices:     #class for all the function in a ATM
                 prevline = line
                                
                     
+            
+
 class Account:                  #Account Class
-    def createAccount(self):    #function to create account, and manage logins
+    def createAccount(self):    #function to create account
         newID = ''
         count = 0
         balance = 0
@@ -213,7 +222,7 @@ def main():     #main function
             f.write("%s\n"%i)
 
         f.flush()
-        os.fsync(f.fileno())            #these two lines removes the buffer in python and the OS, and instantly updates the data
+        os.fsync(f.fileno())
         
     
     login = str(input("Input your login id: "))
@@ -223,7 +232,7 @@ def main():     #main function
     if checked:
         balance = start.getBalance(login)
         service = BankServices(login,balance)
-        option = int(input("1.Withdraw\n2.Deposit\n3.Debit\n4.Transfer\n"))     #services in the bank
+        option = int(input("1.Withdraw\n2.Deposit\n3.Debit\n4.Transfer\n5.Check Balance\n"))     #services in the bank
         if option == 1:
             amount = int(input("Input withdraw amount: "))
             service.withdrawMoney(amount)
@@ -236,15 +245,12 @@ def main():     #main function
         elif option == 4:
             transferID = input("Input the ID you are transferring to: ")
             service.TransferMoney(login,transferID)
+        elif option == 5:
+            service.checkBalance()
 
     
             
 
     f.flush()
-    os.fsync(f.fileno())            #these two lines removes the buffer in python and the OS, and instantly updates the data
-    f.close()                       #closes the file
-    
-    
-        
-main()
-    
+    os.fsync(f.fileno())
+    f.close()
