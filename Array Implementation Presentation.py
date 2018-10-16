@@ -1,5 +1,7 @@
-
-#5
+#Group 1
+#Millen,Ryan,Yohanes, Fariz
+#Number 5
+#---------------------------
 
 arr = []
 #initialises the array "arr"
